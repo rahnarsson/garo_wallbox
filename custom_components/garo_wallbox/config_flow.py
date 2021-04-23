@@ -73,3 +73,26 @@ class FlowHandler(config_entries.ConfigFlow):
         """Initialize step from discovery."""
         _LOGGER.info("Discovered device: %s", user_input)
         return await self._create_entry(user_input[KEY_IP], None)
+
+    async def async_get_options_flow(config_entry)
+        """Set up the Garo Wallbox options."""
+        return GaroWallBoxOptionsFlowHandler()
+
+
+class GaroWallBoxOptionsFlowHandler(config_entries.OptionsFlow):
+    async def async_step_init(self, user_input=None):
+        """Manage the options."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        "enable_powermeter",
+                        default=self.config_entry.options.get("enable_powermeter"),
+                    ): bool
+                }
+            ),
+        )
